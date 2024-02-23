@@ -15,6 +15,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(defaultVotes);
+  const mostVotedAnecdoteIndex = Object.keys(votes).sort((voteKeyA, voteKeyB) => votes[voteKeyB] - votes[voteKeyA])[0];
 
   const selectNectRandomAnecdote = () => {
     const max = Math.floor(anecdotes.length);
@@ -31,10 +32,13 @@ const App = () => {
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <button onClick={vote}>vote</button>
       <button onClick={selectNectRandomAnecdote}>next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <p>{votes[mostVotedAnecdoteIndex] ? anecdotes[mostVotedAnecdoteIndex] : 'No any votes'}</p>
     </div>
   )
 }
