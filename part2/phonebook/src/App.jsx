@@ -18,12 +18,24 @@ const App = () => {
       })
   }, [])
 
+  const updatePerson = (person) => {
+    if (window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one ?`)) {
+      personsService.update(person.id, person)
+        .then(updatedPerson => {
+          setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
+        })
+    }
+    setNewName('');
+    setPhoneNumber('');
+  }
+
   const addPerson = (event) => {
     event.preventDefault();
 
-    const isAlreadyInList = persons.some(person => person.name === newName);
-    if (isAlreadyInList) {
-      return alert(`${newName} is already added to phonebook`);
+    const existingPerson = persons.find(person => person.name === newName);
+    if (existingPerson) {
+      updatePerson({ ...existingPerson, name: newName, number: phoneNumber });
+      return;
     }
 
     personsService
