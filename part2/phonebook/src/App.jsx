@@ -36,6 +36,17 @@ const App = () => {
     setPhoneNumber('');
   }
 
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personsService
+        .deleteRequest(person.id)
+        .then(result => {
+          const newPersons = persons.filter(person => person.id !== result.id);
+          setPersons(newPersons);
+        })
+    }
+  }
+
   const filteredPersons = persons.filter(person => person.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()));
 
   return (
@@ -51,7 +62,7 @@ const App = () => {
         onSubmit={addPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDelete={deletePerson} />
     </div>
   )
 }
