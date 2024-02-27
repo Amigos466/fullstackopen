@@ -12,12 +12,16 @@ const App = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [notification, setNotification] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService
       .getAll()
       .then(persons => {
         setPersons(persons);
+      })
+      .catch(() => {
+        setErrorMessage('Some error happened');
       })
   }, [])
 
@@ -32,6 +36,13 @@ const App = () => {
           setTimeout(() => {
             setNotification(null)
           }, 5000)
+        })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            setErrorMessage(`Information of ${person.name} has already been removed from server`);
+          } else {
+            setErrorMessage('Some error happened');
+          }
         })
     }
     setNewName('');
@@ -58,6 +69,9 @@ const App = () => {
           setNotification(null)
         }, 5000)
       })
+      .catch(() => {
+        setErrorMessage('Some error happened');
+      })
 
     setNewName('');
     setPhoneNumber('');
@@ -71,6 +85,13 @@ const App = () => {
           const newPersons = persons.filter(person => person.id !== result.id);
           setPersons(newPersons);
         })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            setErrorMessage(`Information of ${person.name} has already been removed from server`);
+          } else {
+            setErrorMessage('Some error happened');
+          }
+        })
     }
   }
 
@@ -80,6 +101,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notification} className="added-updated-item" />
+      <Notification message={errorMessage} className="error" />
       <Filter filterValue={filter} onFilterChange={setFilter} />
       <h2>add new</h2>
       <PersonForm
