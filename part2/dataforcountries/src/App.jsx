@@ -1,27 +1,7 @@
 import { useEffect, useState } from "react";
 import countriesService from "./services/countries";
-
-const SingleCountryData = ({ country }) => {
-  return (
-    <>
-      <h2>{country.name.official}</h2>
-      <p>capital {country.capital}</p>
-      <p>area {country.area}</p>
-      <br />
-      <h3>languages:</h3>
-      <ul>
-        {Object.keys(country.languages)
-          .map(languageKey => <li key={languageKey}>{country.languages[languageKey]}</li>)
-        }
-      </ul>
-      <img src={country.flags.png} alt="flag" />
-    </>
-  )
-}
-
-const CountriesList = ({ countries }) => (
-  countries.map(country => <p key={country.cca2}>{country.name.official}</p>)
-)
+import SingleCountryData from "./components/SingleCountryData";
+import CountriesList from "./components/CountriesList";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
