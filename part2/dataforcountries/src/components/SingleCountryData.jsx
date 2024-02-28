@@ -1,3 +1,5 @@
+import WeatherBlock from "./WeatherData";
+
 const SingleCountryData = ({ country }) => {
     return (
         <>
@@ -12,6 +14,8 @@ const SingleCountryData = ({ country }) => {
                 }
             </ul>
             <img src={country.flags.png} alt="flag" />
+            <h2>Weather in {country.capital}</h2>
+            <WeatherBlock cityCoordinates={country.capitalInfo.latlng} />
         </>
     )
 }
